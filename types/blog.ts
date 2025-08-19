@@ -1,3 +1,5 @@
+// C:\Next\j\project\Osmium-blog-admin\osmiumblog\types\blog.ts
+
 export interface BlogPost {
   id?: string;
   title: string;
@@ -6,17 +8,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   category: string;
-  images: (string | File | null)[]; // array of image URLs or File objects
+  images: (string | File | null)[]; // ✅ array of 3 slots
 }
 
-// Type from backend (MongoDB)
-export interface BlogPostBackend {
-  _id: string;
-  title: string;
-  summary: string;
-  author: string;
-  date: string;
-  readTime: string;
-  category: string;
-  images: string[]; // array of URLs
-}
+
