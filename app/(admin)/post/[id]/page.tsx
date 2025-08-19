@@ -19,7 +19,7 @@ export default function SinglePostPage() {
 
   const fetchPost = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`);
       if (!res.ok) throw new Error("Failed to fetch post");
 
       const data = await res.json();
@@ -33,7 +33,7 @@ export default function SinglePostPage() {
         readTime: data.readTime,
         category: data.category,
         images: (data.images || []).map(
-          (img: string | null) => (img ? `http://localhost:5000${img}` : null)
+          (img: string | null) => (img ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${img}` : null)
         ),
       };
 

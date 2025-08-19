@@ -20,7 +20,7 @@ export default function EditPostPage() {
 
     const fetchPost = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`);
         if (!res.ok) throw new Error("Failed to fetch post");
 
         const data = await res.json();
@@ -68,7 +68,7 @@ export default function EditPostPage() {
         }
       });
 
-      const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`, {
         method: "PUT",
         body: formData,
       });

@@ -37,7 +37,7 @@ export default function BlogPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/blogs");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`);
         if (!res.ok) throw new Error("Failed to fetch posts");
 
         const data: BackendPost[] = await res.json();
@@ -70,7 +70,7 @@ export default function BlogPosts() {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete post");

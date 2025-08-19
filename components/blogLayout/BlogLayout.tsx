@@ -17,7 +17,7 @@ export function BlogLayout({ children }: BlogLayoutProps) {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function useAuth() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ export default function useAuth() {
       console.log("Token sent to backend:", token); // debug
 
       try {
-        const res = await fetch("http://localhost:5000/api/protected", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/protected`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
