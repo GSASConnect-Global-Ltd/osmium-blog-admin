@@ -17,7 +17,7 @@ export function BlogLayout({ children }: BlogLayoutProps) {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`, {
+      await fetch("https://osmium-blog-admin-backend.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

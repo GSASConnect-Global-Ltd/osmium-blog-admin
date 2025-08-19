@@ -22,7 +22,7 @@ export default function useAuth() {
       console.log("Token sent to backend:", token); // debug
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/protected`, {
+        const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/protected", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

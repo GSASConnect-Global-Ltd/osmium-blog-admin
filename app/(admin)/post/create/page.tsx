@@ -22,7 +22,7 @@ export default function NewPost() {
         if (img) formData.append("images", img);
       });
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`, {
+      const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs", {
         method: "POST",
         body: formData,
       });
