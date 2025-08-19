@@ -18,26 +18,44 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      console.log("🔹 Sending login request to:", `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`);
+      console.log("📤 Request body:", { email, password });
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-         credentials: "include", // ✅ this stores the refresh cookie
+        credentials: "include", // ✅ store refresh cookie
       });
 
-      const data = await res.json();
+      console.log("📥 Raw response:", res);
+
+      const text = await res.text(); // get raw text first
+      console.log("📄 Response text:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+        console.log("✅ Parsed JSON:", data);
+      } catch (parseErr) {
+        console.error("❌ Failed to parse JSON:", parseErr);
+        throw new Error("Server did not return valid JSON");
+      }
 
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }
 
       localStorage.setItem("token", data.accessToken);
+      console.log("🔑 Access token saved:", data.accessToken);
 
       router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {
+        console.error("❌ Login error:", err.message);
         setError(err.message);
       } else {
+        console.error("❌ Unexpected login error:", err);
         setError("An unexpected error occurred");
       }
     } finally {
