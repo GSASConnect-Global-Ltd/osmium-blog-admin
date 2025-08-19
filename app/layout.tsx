@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { BlogLayout } from "@/components/blogLayout/BlogLayout";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,20 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Osmium Blog Admin",
-  description: "Blog admin dashboard for managing posts, users, and settings.",
+  title: "Osmium Blog",
+  description: "Welcome to Osmium Blog",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body >
-         <BlogLayout>{children}</BlogLayout>
-        
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
       </body>
     </html>
   );

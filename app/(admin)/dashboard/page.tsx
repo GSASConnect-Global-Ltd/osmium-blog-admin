@@ -2,11 +2,13 @@
 
 import { FileText, Plus, Users, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth"; // still used for user info
 
 export default function Dashboard() {
   const router = useRouter();
+  const { user } = useAuth(); // ✅ safe to use (layout already ensured auth)
 
-  // Static posts (for preview)
+  // Example static posts (replace with API later)
   const posts = [
     { id: 1, title: "First Post", author: "John Doe", category: "News", date: "2025-08-01" },
     { id: 2, title: "Second Post", author: "Jane Smith", category: "Tech", date: "2025-08-05" },
@@ -45,7 +47,7 @@ export default function Dashboard() {
           Dashboard
         </h1>
         <p className="text-sm text-neutral-500">
-          Welcome to your blog administration panel
+          Welcome {user?.id ? `User ${user.id}` : "to your blog administration panel"}
         </p>
       </div>
 
@@ -79,7 +81,7 @@ export default function Dashboard() {
           <div className="p-4 space-y-3">
             <button
               className="w-full flex items-center px-4 py-2 text-white bg-black hover:bg-neutral-800 rounded-lg transition-colors"
-              onClick={() => router.push("/post/new")}
+              onClick={() => router.push("/post/create")}
             >
               <Plus className="h-4 w-4 mr-2" />
               Create New Post
@@ -89,7 +91,7 @@ export default function Dashboard() {
               onClick={() => router.push("/post")}
             >
               <FileText className="h-4 w-4 mr-2" />
-              View All Posts
+              View All Posts 
             </button>
           </div>
         </div>

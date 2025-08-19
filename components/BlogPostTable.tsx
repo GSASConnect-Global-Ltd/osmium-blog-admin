@@ -11,7 +11,6 @@ interface BlogPostData {
   author: string;
   date: string;
   readTime?: string;
-  slug: string;
 }
 
 interface BlogPostTableProps {
@@ -78,11 +77,11 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
             <div className="flex items-start gap-2 ml-4">
               <IconButton
                 icon={<Eye className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.slug}`)}
+                onClick={() => router.push(`/post/${post.id}`)} // ✅ use id
               />
               <IconButton
                 icon={<Edit2 className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.id}/edit`)}
+                onClick={() => router.push(`/post/${post.id}/edit`)} // ✅ use id
               />
               <IconButton
                 icon={<Trash2 className="h-4 w-4 text-red-600" />}

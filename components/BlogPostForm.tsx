@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { BlogPost } from "@/types/blog";
 
 const CATEGORIES = [
   "Technology",
@@ -12,17 +13,6 @@ const CATEGORIES = [
   "Lifestyle",
   "Tutorial",
 ];
-
-interface BlogPost {
-  title: string;
-  summary: string;
-  author: string;
-  date: string;
-  readTime: string;
-  category: string;
-  slug: string;
-  image: string;
-}
 
 interface BlogPostFormProps {
   initialData?: Partial<BlogPost>;
@@ -38,34 +28,37 @@ export default function BlogPostForm({
   const router = useRouter();
 
   const [formData, setFormData] = useState<BlogPost>({
+    id: initialData.id,
     title: initialData.title || "",
     summary: initialData.summary || "",
     author: initialData.author || "",
     date: initialData.date || new Date().toISOString().split("T")[0],
     readTime: initialData.readTime || "",
     category: initialData.category || "",
-    slug: initialData.slug || "",
-    image: initialData.image || "",
+    images: initialData.images || [null, null, null],
   });
 
-  const updateField = (field: keyof BlogPost, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const updateField = (field: keyof BlogPost, value: string | File | null, index?: number) => {
+    if (field === "images" && index !== undefined) {
+      const newImages = [...formData.images];
+      newImages[index] = value;
+      setFormData((prev) => ({ ...prev, images: newImages }));
+    } else {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formData.title.trim() || !formData.summary.trim() || !formData.author.trim()) {
       alert("Please fill in all required fields.");
       return;
     }
-
     onSubmit(formData);
   };
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Back Button */}
       <button
         type="button"
         onClick={() => router.push("/post")}
@@ -83,7 +76,6 @@ export default function BlogPostForm({
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-6 space-y-6 border border-black"
       >
-        {/* Form Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormInput
             label="Title *"
@@ -127,16 +119,21 @@ export default function BlogPostForm({
             onChange={(e) => updateField("date", e.target.value)}
           />
 
-          <FormInput
-            label="Featured Image URL"
-            id="image"
-            value={formData.image}
-            onChange={(e) => updateField("image", e.target.value)}
-            placeholder="https://example.com/image.jpg"
-          />
+          {[0, 1, 2].map((i) => (
+            <FormInput
+              key={i}
+              label={`Image ${i + 1}`}
+              id={`image-${i}`}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                updateField("images", file, i);
+              }}
+            />
+          ))}
         </div>
 
-        {/* Summary */}
         <FormTextarea
           label="Summary *"
           id="summary"
@@ -146,7 +143,6 @@ export default function BlogPostForm({
           required
         />
 
-        {/* Actions */}
         <div className="flex gap-4 pt-4">
           <button
             type="submit"
@@ -167,18 +163,15 @@ export default function BlogPostForm({
   );
 }
 
-/* --- UI Helper Components --- */
+/* --- UI Helpers --- */
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   id: string;
 }
-
 function FormInput({ label, id, ...props }: FormInputProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">
-        {label}
-      </label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
       <input
         id={id}
         {...props}
@@ -195,13 +188,10 @@ interface FormSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: string[];
 }
-
 function FormSelect({ label, id, value, onChange, options }: FormSelectProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">
-        {label}
-      </label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
       <select
         id={id}
         value={value}
@@ -209,11 +199,7 @@ function FormSelect({ label, id, value, onChange, options }: FormSelectProps) {
         className="w-full border border-black rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white"
       >
         <option value="">Select category</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
+        {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
       </select>
     </div>
   );
@@ -223,13 +209,10 @@ interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEle
   label: string;
   id: string;
 }
-
 function FormTextarea({ label, id, ...props }: FormTextareaProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">
-        {label}
-      </label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
       <textarea
         id={id}
         {...props}
