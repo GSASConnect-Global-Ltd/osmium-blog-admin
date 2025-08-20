@@ -18,9 +18,12 @@ export default function NewPost() {
       formData.append("category", data.category);
 
       // Append images (3 slots)
-      data.images.forEach((img, i) => {
-        if (img) formData.append("images", img);
+      data.images.forEach((img) => {
+        if (img instanceof File) {
+          formData.append("images", img);
+        }
       });
+
 
       const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs", {
         method: "POST",

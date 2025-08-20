@@ -20,7 +20,7 @@ export default function EditPostPage() {
 
     const fetchPost = async () => {
       try {
-        const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`); //undefined env variable
+        const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`);
         if (!res.ok) throw new Error("Failed to fetch post");
 
         const data = await res.json();
@@ -33,6 +33,7 @@ export default function EditPostPage() {
           date: data.date,
           content: data.content,
           category: data.category,
+          // Convert string paths to File objects if you want to allow replacement
           images: data.images || [null, null, null],
         };
 
@@ -61,11 +62,9 @@ export default function EditPostPage() {
       formData.append("content", updatedData.content);
       formData.append("category", updatedData.category);
 
-      // Append images (skip null)
-      updatedData.images.forEach((img, index) => {
-        if (img instanceof File) {
-          formData.append("images", img);
-        }
+      // Append images (only if it's a File object)
+      updatedData.images.forEach((img) => {
+        if (img instanceof File) formData.append("images", img);
       });
 
       const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`, {
@@ -73,13 +72,17 @@ export default function EditPostPage() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Failed to update post");
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Failed to update post");
+      }
 
       alert("Post updated successfully");
       router.push(`/post/${id}`);
     } catch (error) {
       console.error("❌ Error updating post:", error);
-      alert("Failed to update post");
+      if (error instanceof Error) alert(error.message);
+      else alert("Failed to update post");
     }
   };
 
