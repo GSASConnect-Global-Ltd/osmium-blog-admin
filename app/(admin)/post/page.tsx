@@ -73,7 +73,11 @@ export default function BlogPosts() {
       const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Failed to delete post");
+      if (!res.ok) 
+        {
+          const errorText = await res.text();
+          throw new Error(`Failed to delete post: ${res.status} ${errorText}`);
+        }
 
       setPosts(posts.filter((post) => post.id !== id));
       alert("Post deleted successfully.");
