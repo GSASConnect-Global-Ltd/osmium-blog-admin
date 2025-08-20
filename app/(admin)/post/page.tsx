@@ -70,7 +70,7 @@ export default function BlogPosts() {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}", {
+      const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete post");
