@@ -31,7 +31,7 @@ export default function EditPostPage() {
           summary: data.summary,
           author: data.author,
           date: data.date,
-          readTime: data.readTime,
+          content: data.content,
           category: data.category,
           images: data.images || [null, null, null],
         };
@@ -58,7 +58,7 @@ export default function EditPostPage() {
       formData.append("summary", updatedData.summary);
       formData.append("author", updatedData.author);
       formData.append("date", updatedData.date);
-      formData.append("readTime", updatedData.readTime);
+      formData.append("content", updatedData.content);
       formData.append("category", updatedData.category);
 
       // Append images (skip null)
