@@ -2,7 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["localhost"], // ✅ allow images from localhost
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "osmium-blog-admin-backend.onrender.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost", // keep localhost for dev
+      },
+    ],
   },
 };
 

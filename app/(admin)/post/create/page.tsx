@@ -25,6 +25,15 @@ export default function NewPost() {
       });
 
 
+        for (const pair of formData.entries()) {
+          if (pair[1] instanceof File) {
+            console.log("➡️ FormData File:", pair[0], pair[1].name);
+          } else {
+            console.log("➡️ FormData:", pair[0], pair[1]);
+          }
+        }
+
+
       const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs", {
         method: "POST",
         body: formData,
