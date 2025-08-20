@@ -6,7 +6,7 @@ export interface BlogPost {
   summary: string;
   author: string;
   date: string;
-  readTime: string;
+  content: string;
   category: string;
   images: (string | File | null)[]; // ✅ array of 3 slots
 }

@@ -33,7 +33,7 @@ export default function BlogPostForm({
     summary: initialData.summary || "",
     author: initialData.author || "",
     date: initialData.date || new Date().toISOString().split("T")[0],
-    readTime: initialData.readTime || "",
+    content: initialData.content || "",
     category: initialData.category || "",
     images: initialData.images || [null, null, null],
   });
@@ -103,13 +103,15 @@ export default function BlogPostForm({
             options={CATEGORIES}
           />
 
-          <FormInput
-            label="Read Time"
-            id="readTime"
-            value={formData.readTime}
-            onChange={(e) => updateField("readTime", e.target.value)}
-            placeholder="e.g., 5 min read"
+          <FormTextarea
+            label="Content *"
+            id="content"
+            value={formData.content}
+            onChange={(e) => updateField("content", e.target.value)}
+            placeholder="Write the full content of the post"
+            required
           />
+
 
           <FormInput
             label="Date"

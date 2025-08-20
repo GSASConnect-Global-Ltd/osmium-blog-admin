@@ -33,7 +33,7 @@ export default function Dashboard() {
     const fetchStats = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/dashboard`,
+          "https://osmium-blog-admin-backend.onrender.com/api/blogs/dashboard",
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to fetch stats");
@@ -54,7 +54,7 @@ export default function Dashboard() {
     const fetchRecent = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/recent`,
+          "https://osmium-blog-admin-backend.onrender.com/api/blogs/recent",
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to fetch recent posts");

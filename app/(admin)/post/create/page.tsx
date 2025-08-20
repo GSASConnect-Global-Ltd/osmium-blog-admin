@@ -14,7 +14,7 @@ export default function NewPost() {
       formData.append("summary", data.summary);
       formData.append("author", data.author);
       formData.append("date", data.date);
-      formData.append("readTime", data.readTime);
+      formData.append("content", data.content);
       formData.append("category", data.category);
 
       // Append images (3 slots)
