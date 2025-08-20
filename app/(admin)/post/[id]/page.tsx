@@ -99,11 +99,15 @@ export default function SinglePostPage() {
       <p className="text-black/70 text-lg mb-6 italic">{post.summary}</p>
 
       {/* Full Content */}
-      <div className="text-black/90 text-lg whitespace-pre-line space-y-4">
-        {post.content.split("\n").map((line, idx) => (
-          <p key={idx}>{line}</p>
-        ))}
-      </div>
+      {/* Full Content */}
+        <div className="text-black/90 text-lg whitespace-pre-line space-y-4">
+          {(post.content || "")
+            .split("\n")
+            .map((line, idx) => (
+              <p key={idx}>{line}</p>
+            ))}
+        </div>
+
     </div>
   );
 }
