@@ -130,27 +130,34 @@ export default function Dashboard() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Quick Actions */}
-        <div className="bg-white border border-neutral-200 rounded-xl shadow-sm">
-          <div className="border-b border-neutral-200 p-4">
-            <h2 className="font-semibold text-black">Quick Actions</h2>
-          </div>
-          <div className="p-4 space-y-3">
-            <button
-              className="w-full flex items-center px-4 py-2 text-white bg-black hover:bg-neutral-800 rounded-lg transition-colors"
-              onClick={() => router.push("/post/create")}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Create New Post
-            </button>
-            <button
-              className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
-              onClick={() => router.push("/post")}
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              View All Posts
-            </button>
-          </div>
-        </div>
+        {/* Quick Actions */}
+<div className="p-4 space-y-3">
+  <button
+    className="w-full flex items-center px-4 py-2 text-white bg-black hover:bg-neutral-800 rounded-lg transition-colors"
+    onClick={() => router.push("/post/create")}
+  >
+    <Plus className="h-4 w-4 mr-2" />
+    Create New Post
+  </button>
+
+  <button
+    className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
+    onClick={() => router.push("/post")}
+  >
+    <FileText className="h-4 w-4 mr-2" />
+    View All Posts
+  </button>
+
+  {/* ✅ New Button to Add User */}
+  <button
+    className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
+    onClick={() => router.push("/user/create")}
+  >
+    <Users className="h-4 w-4 mr-2" />
+    Add New User
+  </button>
+</div>
+
 
         {/* ✅ Recent Posts */}
         <div className="bg-white border border-neutral-200 rounded-xl shadow-sm">

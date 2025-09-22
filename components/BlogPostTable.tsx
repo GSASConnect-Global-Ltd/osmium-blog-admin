@@ -7,7 +7,7 @@ interface BlogPostData {
   id: string;
   title: string;
   category?: string;
-  summary?: string;
+  content?: string; // ✅ HTML content
   author: string;
   date: string;
   readTime?: string;
@@ -56,8 +56,12 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
                 )}
               </div>
 
-              {post.summary && (
-                <p className="text-black/60 mb-4 line-clamp-2">{post.summary}</p>
+              {/* ✅ Render HTML content */}
+              {post.content && (
+                <div
+                  className="text-black/70 mb-4 line-clamp-3 prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
               )}
 
               <div className="flex items-center gap-3 text-sm text-black/50">
@@ -77,11 +81,11 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
             <div className="flex items-start gap-2 ml-4">
               <IconButton
                 icon={<Eye className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.id}`)} // ✅ use id
+                onClick={() => router.push(`/post/${post.id}`)}
               />
               <IconButton
                 icon={<Edit2 className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.id}/edit`)} // ✅ use id
+                onClick={() => router.push(`/post/${post.id}/edit`)}
               />
               <IconButton
                 icon={<Trash2 className="h-4 w-4 text-red-600" />}
@@ -101,7 +105,6 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
   );
 }
 
-/* Small reusable button for icons */
 function IconButton({
   icon,
   onClick,

@@ -4,6 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { BlogPost } from "@/types/blog";
+import dynamic from "next/dynamic";
+
+// ⚡ replace react-quill with react-quill-new
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
+
 
 const CATEGORIES = [
   "Technology",
@@ -38,7 +44,11 @@ export default function BlogPostForm({
     images: initialData.images || [null, null, null],
   });
 
-  const updateField = (field: keyof BlogPost, value: string | File | null, index?: number) => {
+  const updateField = (
+    field: keyof BlogPost,
+    value: string | File | null,
+    index?: number
+  ) => {
     if (field === "images" && index !== undefined) {
       const newImages = [...formData.images];
       newImages[index] = value;
@@ -103,16 +113,6 @@ export default function BlogPostForm({
             options={CATEGORIES}
           />
 
-          <FormTextarea
-            label="Content *"
-            id="content"
-            value={formData.content}
-            onChange={(e) => updateField("content", e.target.value)}
-            placeholder="Write the full content of the post"
-            required
-          />
-
-
           <FormInput
             label="Date"
             id="date"
@@ -134,6 +134,19 @@ export default function BlogPostForm({
               }}
             />
           ))}
+        </div>
+
+        {/* 🔥 Quill Editor */}
+        <div className="space-y-1">
+          <label htmlFor="content" className="block text-sm font-medium text-black">
+            Content *
+          </label>
+          <ReactQuill
+            theme="snow"
+            value={formData.content}
+            onChange={(value) => updateField("content", value)}
+            className="bg-white border border-black rounded-md min-h-[200px]"
+          />
         </div>
 
         <FormTextarea
@@ -173,7 +186,9 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 function FormInput({ label, id, ...props }: FormInputProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+      </label>
       <input
         id={id}
         {...props}
@@ -193,7 +208,9 @@ interface FormSelectProps {
 function FormSelect({ label, id, value, onChange, options }: FormSelectProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+      </label>
       <select
         id={id}
         value={value}
@@ -201,7 +218,11 @@ function FormSelect({ label, id, value, onChange, options }: FormSelectProps) {
         className="w-full border border-black rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-white"
       >
         <option value="">Select category</option>
-        {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
       </select>
     </div>
   );
@@ -214,11 +235,13 @@ interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEle
 function FormTextarea({ label, id, ...props }: FormTextareaProps) {
   return (
     <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium text-black">{label}</label>
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+      </label>
       <textarea
         id={id}
         {...props}
-        rows={4}
+        rows={3}
         className="w-full border border-black rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
       />
     </div>

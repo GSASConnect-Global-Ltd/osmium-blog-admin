@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BlogPost } from "@/types/blog";
+import parse from "html-react-parser"; // ✅ import parser
 
 export default function SinglePostPage() {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +34,8 @@ export default function SinglePostPage() {
           content: data.content,
           category: data.category,
           images: (data.images || []).map(
-            (img: string | null) => (img ? `https://osmium-blog-admin-backend.onrender.com${img}` : null)
+            (img: string | null) =>
+              img ? `https://osmium-blog-admin-backend.onrender.com${img}` : null
           ),
         };
 
@@ -62,6 +64,7 @@ export default function SinglePostPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
+      {/* Back button */}
       <button
         onClick={() => router.push("/post")}
         className="text-sm border border-black text-black px-3 py-2 rounded-md hover:bg-black hover:text-white transition mb-6"
@@ -69,6 +72,7 @@ export default function SinglePostPage() {
         Back to Posts
       </button>
 
+      {/* Title */}
       <h1 className="text-4xl font-bold text-black mb-4">{post.title}</h1>
 
       {/* Metadata */}
@@ -83,9 +87,12 @@ export default function SinglePostPage() {
         {post.images.map(
           (img, i) =>
             img && (
-              <div key={i} className="relative w-full h-64 rounded-md overflow-hidden border border-black/10">
+              <div
+                key={i}
+                className="relative w-full h-64 rounded-md overflow-hidden border border-black/10"
+              >
                 <Image
-                  src={img as string} // already full URL
+                  src={img as string}
                   alt={`Blog image ${i + 1}`}
                   fill
                   className="object-cover"
@@ -99,15 +106,9 @@ export default function SinglePostPage() {
       <p className="text-black/70 text-lg mb-6 italic">{post.summary}</p>
 
       {/* Full Content */}
-      {/* Full Content */}
-        <div className="text-black/90 text-lg whitespace-pre-line space-y-4">
-          {(post.content || "")
-            .split("\n")
-            .map((line, idx) => (
-              <p key={idx}>{line}</p>
-            ))}
-        </div>
-
+      <div className="prose max-w-none text-black/90">
+        {post.content ? parse(post.content) : null}
+      </div>
     </div>
   );
 }
