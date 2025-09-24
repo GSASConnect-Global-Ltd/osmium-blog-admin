@@ -12,12 +12,16 @@ import "react-quill-new/dist/quill.snow.css";
 
 
 const CATEGORIES = [
-  "Technology",
-  "Development",
-  "Design",
-  "Business",
-  "Lifestyle",
-  "Tutorial",
+  "Renewable Energy",
+  "Artificial Intelligence & Robotics",
+  "Extended Reality (XR)",
+  "Digital Twin Technology",
+  "Game Development",
+  "Software Engineering",
+  "Smart Home Concepts",
+  "Modelling and Simulation",
+  "Consultation",
+  "Blockchain Technology",
 ];
 
 interface BlogPostFormProps {

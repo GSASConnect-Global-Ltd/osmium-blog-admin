@@ -6,7 +6,7 @@ import BlogPostTable from "@/components/BlogPostTable";
 import { useState, useEffect } from "react";
 
 interface BlogPostData {
-  id: string;
+  slug: string;
   title: string;
   category?: string;
   summary?: string;
@@ -18,7 +18,7 @@ interface BlogPostData {
 
 // Backend post type
 interface BackendPost {
-  _id: string;
+  slug: string;
   title: string;
   category?: string;
   summary?: string;
@@ -37,14 +37,14 @@ export default function BlogPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`);
         if (!res.ok) throw new Error("Failed to fetch posts");
 
         const data: BackendPost[] = await res.json();
 
         // Map _id to id for frontend consistency
         const mapped: BlogPostData[] = data.map((post) => ({
-          id: post._id,
+          slug: post.slug,
           title: post.title,
           category: post.category,
           summary: post.summary,
@@ -66,12 +66,12 @@ export default function BlogPosts() {
     fetchPosts();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (slug: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`, {
-        method: "DELETE",
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/${slug}`, {
+      method: "DELETE",
       });
       if (!res.ok) 
         {
@@ -79,7 +79,7 @@ export default function BlogPosts() {
           throw new Error(`Failed to delete post: ${res.status} ${errorText}`);
         }
 
-      setPosts(posts.filter((post) => post.id !== id));
+      setPosts(posts.filter((post) => post.slug !== slug));
       alert("Post deleted successfully.");
     } catch (error) {
       console.error("❌ Error deleting post:", error);
@@ -109,7 +109,8 @@ export default function BlogPosts() {
       </div>
 
       {/* Blog Post Table */}
-      <BlogPostTable posts={posts} onDelete={handleDelete} />
+      <BlogPostTable posts={posts} onDelete={handleDelete} /> 
+      
     </div>
   );
 }

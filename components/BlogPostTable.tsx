@@ -4,7 +4,7 @@ import { Edit2, Trash2, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface BlogPostData {
-  id: string;
+  slug: string;
   title: string;
   category?: string;
   content?: string; // ✅ HTML content
@@ -39,7 +39,7 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
     <div className="space-y-5">
       {posts.map((post) => (
         <div
-          key={post.id}
+          key={post.slug}
           className="border border-black/10 rounded-lg p-6 bg-white hover:shadow-lg transition-all"
         >
           <div className="flex items-start justify-between">
@@ -81,11 +81,11 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
             <div className="flex items-start gap-2 ml-4">
               <IconButton
                 icon={<Eye className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.id}`)}
+                onClick={() => router.push(`/post/${post.slug}`)}
               />
               <IconButton
                 icon={<Edit2 className="h-4 w-4" />}
-                onClick={() => router.push(`/post/${post.id}/edit`)}
+                onClick={() => router.push(`/post/${post.slug}/edit`)}
               />
               <IconButton
                 icon={<Trash2 className="h-4 w-4 text-red-600" />}
@@ -93,7 +93,7 @@ export default function BlogPostTable({ posts, onDelete }: BlogPostTableProps) {
                 hoverBg="hover:bg-red-50"
                 onClick={() => {
                   if (confirm(`Are you sure you want to delete "${post.title}"?`)) {
-                    onDelete(post.id);
+                    onDelete(post.slug);
                   }
                 }}
               />

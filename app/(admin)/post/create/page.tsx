@@ -24,17 +24,17 @@ export default function NewPost() {
         }
       });
 
-
-        for (const pair of formData.entries()) {
-          if (pair[1] instanceof File) {
-            console.log("➡️ FormData File:", pair[0], pair[1].name);
-          } else {
-            console.log("➡️ FormData:", pair[0], pair[1]);
-          }
+      // Debugging FormData
+      for (const pair of formData.entries()) {
+        if (pair[1] instanceof File) {
+          console.log("➡️ FormData File:", pair[0], pair[1].name);
+        } else {
+          console.log("➡️ FormData:", pair[0], pair[1]);
         }
+      }
 
-
-      const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/blogs", {
+      // POST request to create blog
+      const res = await fetch("http://localhost:5000/api/blogs", {
         method: "POST",
         body: formData,
       });
@@ -45,7 +45,9 @@ export default function NewPost() {
       }
 
       const newPost = await res.json();
-      router.push(`/post/${newPost.blog._id}`);
+
+      // Navigate using the blog's slug, not ID
+      router.push(`/post/${newPost.blog.slug}`);
     } catch (error: unknown) {
       if (error instanceof Error) alert(error.message);
       else alert("Unexpected error");

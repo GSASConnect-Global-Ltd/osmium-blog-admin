@@ -3,30 +3,32 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BlogPost } from "@/types/blog";
-import parse from "html-react-parser"; // ✅ import parser
+import parse from "html-react-parser";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!; // ✅ use env
 
 export default function SinglePostPage() {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
 
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) {
+    if (!slug) {
       router.replace("/post");
       return;
     }
 
     const fetchPost = async () => {
       try {
-        const res = await fetch(`https://osmium-blog-admin-backend.onrender.com/api/blogs/${id}`);
+        const res = await fetch(`${API_BASE_URL}/api/blogs/${slug}`); // ✅ env
         if (!res.ok) throw new Error("Failed to fetch post");
 
         const data = await res.json();
 
         const mappedPost: BlogPost = {
-          id: data._id,
+          slug: data.slug, // ✅ only slug, no `id`
           title: data.title,
           summary: data.summary,
           author: data.author,
@@ -34,8 +36,7 @@ export default function SinglePostPage() {
           content: data.content,
           category: data.category,
           images: (data.images || []).map(
-            (img: string | null) =>
-              img ? `https://osmium-blog-admin-backend.onrender.com${img}` : null
+            (img: string | null) => (img ? `${API_BASE_URL}${img}` : null) // ✅ prepend base URL
           ),
         };
 
@@ -50,7 +51,7 @@ export default function SinglePostPage() {
     };
 
     fetchPost();
-  }, [id, router]);
+  }, [slug, router]);
 
   if (loading) {
     return (

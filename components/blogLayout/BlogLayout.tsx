@@ -13,11 +13,13 @@ export function BlogLayout({ children }: BlogLayoutProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
 
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await fetch("https://osmium-blog-admin-backend.onrender.com/api/auth/logout", {
+      await fetch(`${API_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -49,7 +51,7 @@ export function BlogLayout({ children }: BlogLayoutProps) {
             <Menu className="h-6 w-6" />
           </button>
 
-          <h1 className="text-2xl font-bold">Blog Management</h1>
+          <h1 className="text-2xl font-bold">ORREL ADMIN</h1>
 
           <button
             onClick={handleLogout}

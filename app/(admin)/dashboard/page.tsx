@@ -130,7 +130,8 @@ export default function Dashboard() {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Quick Actions */}
-        {/* Quick Actions */}
+        
+{/* Quick Actions */}
 <div className="p-4 space-y-3">
   <button
     className="w-full flex items-center px-4 py-2 text-white bg-black hover:bg-neutral-800 rounded-lg transition-colors"
@@ -148,13 +149,31 @@ export default function Dashboard() {
     View All Posts
   </button>
 
-  {/* ✅ New Button to Add User */}
+  {/* ✅ Add New User */}
   <button
     className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
     onClick={() => router.push("/user/create")}
   >
     <Users className="h-4 w-4 mr-2" />
     Add New User
+  </button>
+
+  {/* ✅ Hiring Dashboard */}
+  <button
+    className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
+    onClick={() => router.push("/hiring")}
+  >
+    <Users className="h-4 w-4 mr-2" />
+    Hiring Dashboard
+  </button>
+
+  {/* ✅ Applicants Dashboard */}
+  <button
+    className="w-full flex items-center px-4 py-2 border border-neutral-300 text-black rounded-lg hover:bg-neutral-100 transition-colors"
+    onClick={() => router.push("/applicant")}
+  >
+    <Eye className="h-4 w-4 mr-2" />
+    Applicants Dashboard
   </button>
 </div>
 
