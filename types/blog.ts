@@ -1,6 +1,7 @@
 // C:\Next\j\project\Osmium-blog-admin\osmiumblog\types\blog.ts
 
 export interface BlogPost {
+  id?: string;
   slug?: string;
   title: string;
   summary: string;
