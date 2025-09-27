@@ -30,7 +30,7 @@ jobs:
     - name: Deploy to VPS
       uses: appleboy/ssh-action@v0.1.6
       with:
-        host: ${{ secrets.VPS_IP }}s
+        host: ${{ secrets.VPS_IP }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         # script: |
@@ -38,6 +38,7 @@ jobs:
         #   git pull origin main
         #   npm ci --production
         #   npm run build
+        
         #   pm2 restart ecosystem.config.js
         #   echo "Deployment completed successfully!"
         script: |
