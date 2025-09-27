@@ -41,4 +41,4 @@ jobs:
         #   pm2 restart ecosystem.config.js
         #   echo "Deployment completed successfully!"
         script: |
-            cd /var/www/orrel-app && ./deploy.sh
+            cd /var/www/orrel-admin && ./deploy.sh
