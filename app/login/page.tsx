@@ -12,16 +12,18 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      console.log("🔹 Sending login request to:", "https://osmium-blog-admin-backend.onrender.com/api/auth/login");
+      console.log("🔹 Sending login request to:", `${API_URL}`);
       console.log("📤 Request body:", { email, password });
 
-      const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
