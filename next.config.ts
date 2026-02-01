@@ -22,7 +22,7 @@
 
 import type { NextConfig } from "next";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://orrelng.com/api';
 const API_HOSTNAME = new URL(API_BASE_URL).hostname;
 
 const nextConfig: NextConfig = {
