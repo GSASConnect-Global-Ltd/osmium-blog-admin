@@ -33,6 +33,7 @@ jobs:
         host: ${{ secrets.VPS_IP }}
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22222
         # script: |
         #   cd /var/www/orrel-app
         #   git pull origin main
