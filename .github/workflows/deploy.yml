@@ -40,21 +40,22 @@ jobs:
         script: |
           # Run deploy.sh in background and capture logs
           cd /var/www/orrel-admin
-          nohup ./deploy.sh > deploy.log 2>&1 &
-          DEPLOY_PID=$!
+          ./deploy.sh
+          # nohup ./deploy.sh > deploy.log 2>&1 &
+          # DEPLOY_PID=$!
       
-          # Wait a bit and check if it's still running
-          sleep 30
+          # # Wait a bit and check if it's still running
+          # sleep 30
       
-          if ps -p $DEPLOY_PID > /dev/null; then
-            echo "Deployment is running in background (PID: $DEPLOY_PID)"
-            echo "Check logs at /var/www/orrel-admin/deploy.log"
-            exit 0  # Success - deployment started
-          else
-            echo "Deployment failed quickly, showing logs:"
-            cat deploy.log
-            exit 1
-          fi
+          # if ps -p $DEPLOY_PID > /dev/null; then
+          #   echo "Deployment is running in background (PID: $DEPLOY_PID)"
+          #   echo "Check logs at /var/www/orrel-admin/deploy.log"
+          #   exit 0  # Success - deployment started
+          # else
+          #   echo "Deployment failed quickly, showing logs:"
+          #   cat deploy.log
+          #   exit 1
+          # fi
 
     # - name: Deploy to VPS
     #   uses: appleboy/ssh-action@v0.1.6
