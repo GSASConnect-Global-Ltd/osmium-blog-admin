@@ -26,6 +26,7 @@ jobs:
 
     - name: Build application
       run: npm run build
+    
 
     - name: Deploy to VPS
       uses: appleboy/ssh-action@v0.1.6
@@ -34,13 +35,41 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22222
-        # script: |
-        #   cd /var/www/orrel-app
-        #   git pull origin main
-        #   npm ci --production
-        #   npm run build
-        
-        #   pm2 restart ecosystem.config.js
-        #   echo "Deployment completed successfully!"
+        timeout: 180s  # 3 minutes for initial connection
+        command_timeout: 900s  # 15 minutes for commands
         script: |
-            cd /var/www/orrel-admin && ./deploy.sh
+          # Run deploy.sh in background and capture logs
+          cd /var/www/orrel-admin
+          nohup ./deploy.sh > deploy.log 2>&1 &
+          DEPLOY_PID=$!
+      
+          # Wait a bit and check if it's still running
+          sleep 30
+      
+          if ps -p $DEPLOY_PID > /dev/null; then
+            echo "Deployment is running in background (PID: $DEPLOY_PID)"
+            echo "Check logs at /var/www/orrel-admin/deploy.log"
+            exit 0  # Success - deployment started
+          else
+            echo "Deployment failed quickly, showing logs:"
+            cat deploy.log
+            exit 1
+          fi
+
+    # - name: Deploy to VPS
+    #   uses: appleboy/ssh-action@v0.1.6
+    #   with:
+    #     host: ${{ secrets.VPS_IP }}
+    #     username: ${{ secrets.VPS_USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     port: 22222
+    #     # script: |
+    #     #   cd /var/www/orrel-app
+    #     #   git pull origin main
+    #     #   npm ci --production
+    #     #   npm run build
+        
+    #     #   pm2 restart ecosystem.config.js
+    #     #   echo "Deployment completed successfully!"
+    #     script: |
+    #         cd /var/www/orrel-admin && ./deploy.sh
