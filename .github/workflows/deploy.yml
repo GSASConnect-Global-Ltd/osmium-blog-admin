@@ -42,6 +42,8 @@ jobs:
           cd /var/www/orrel-admin
           git reset --hard &&
 
+          git pull origin main &&
+
           npm install &&
 
           npm run build
