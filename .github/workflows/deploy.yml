@@ -40,7 +40,17 @@ jobs:
         script: |
           # Run deploy.sh in background and capture logs
           cd /var/www/orrel-admin
-          ./deploy.sh
+          git reset --hard &&
+
+          npm install &&
+
+          npm run build
+
+          pm2 restart orrel-admin
+
+          pm2 save
+
+          # ./deploy.sh
           # nohup ./deploy.sh > deploy.log 2>&1 &
           # DEPLOY_PID=$!
       
