@@ -28,7 +28,9 @@ const ApplicantsPage = () => {
   const [loading, setLoading] = useState(false);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
 
-  const API_URL = "https://osmium-blog-admin-backend.onrender.com"; // base URL for backend
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL; // base URL for backend
+
+  // const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
   // Fetch applications
   const fetchApplications = async () => {

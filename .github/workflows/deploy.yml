@@ -1,0 +1,88 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests (if you have any)
+      run: npm test --if-present
+
+    - name: Build application
+      run: npm run build
+    
+
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22222
+        timeout: 180s  # 3 minutes for initial connection
+        command_timeout: 900s  # 15 minutes for commands
+        script: |
+          # Run deploy.sh in background and capture logs
+          cd /var/www/orrel-admin
+          git reset --hard &&
+
+          git pull origin main &&
+
+          npm install &&
+
+          npm run build
+
+          pm2 restart orrel-admin
+
+          pm2 save
+
+          # ./deploy.sh
+          # nohup ./deploy.sh > deploy.log 2>&1 &
+          # DEPLOY_PID=$!
+      
+          # # Wait a bit and check if it's still running
+          # sleep 30
+      
+          # if ps -p $DEPLOY_PID > /dev/null; then
+          #   echo "Deployment is running in background (PID: $DEPLOY_PID)"
+          #   echo "Check logs at /var/www/orrel-admin/deploy.log"
+          #   exit 0  # Success - deployment started
+          # else
+          #   echo "Deployment failed quickly, showing logs:"
+          #   cat deploy.log
+          #   exit 1
+          # fi
+
+    # - name: Deploy to VPS
+    #   uses: appleboy/ssh-action@v0.1.6
+    #   with:
+    #     host: ${{ secrets.VPS_IP }}
+    #     username: ${{ secrets.VPS_USER }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     port: 22222
+    #     # script: |
+    #     #   cd /var/www/orrel-app
+    #     #   git pull origin main
+    #     #   npm ci --production
+    #     #   npm run build
+        
+    #     #   pm2 restart ecosystem.config.js
+    #     #   echo "Deployment completed successfully!"
+    #     script: |
+    #         cd /var/www/orrel-admin && ./deploy.sh
