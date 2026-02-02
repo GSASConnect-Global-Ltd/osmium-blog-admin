@@ -34,7 +34,7 @@ export default function NewPost() {
       }
 
       // POST request to create blog
-      const res = await fetch("http://localhost:5000/api/blogs", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`, {
         method: "POST",
         body: formData,
       });
