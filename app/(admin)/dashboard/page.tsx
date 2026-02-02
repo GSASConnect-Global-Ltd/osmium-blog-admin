@@ -18,6 +18,9 @@ export default function Dashboard() {
   const router = useRouter();
   const { user } = useAuth();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("🔷 API_URL:", API_URL);
+
   const [stats, setStats] = useState<{
     totalPosts: number;
     totalAuthors: number;
@@ -28,12 +31,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [loadingRecent, setLoadingRecent] = useState(true);
 
+
   // ✅ Fetch dashboard stats
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const res = await fetch(
-          "https://osmium-blog-admin-backend.onrender.com/api/blogs/dashboard",
+          `${API_URL}/api/blogs/dashboard`,
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to fetch stats");
@@ -54,7 +58,7 @@ export default function Dashboard() {
     const fetchRecent = async () => {
       try {
         const res = await fetch(
-          "https://osmium-blog-admin-backend.onrender.com/api/blogs/recent",
+          `${API_URL}/api/blogs/recent`,
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error("Failed to fetch recent posts");

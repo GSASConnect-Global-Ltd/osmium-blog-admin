@@ -46,12 +46,15 @@ export default function HiringAdminPage() {
     deadline: "",
   });
 
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("🔷 API_URL:", API_URL);
+
   // ✅ Fetch jobs + stats
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jobsRes = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings", { cache: "no-store" });
-        const statsRes = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings/dashboard", { cache: "no-store" });
+        const jobsRes = await fetch(`${API_URL}/api/hirings`, { cache: "no-store" });
+        const statsRes = await fetch(`${API_URL}/api/hirings/dashboard`, { cache: "no-store" });
 
         if (jobsRes.ok) setJobs(await jobsRes.json());
         if (statsRes.ok) setStats(await statsRes.json());
@@ -77,7 +80,7 @@ const handleCreate = async () => {
       Object.entries(form).filter(([_, v]) => v !== "")
     );
 
-    const res = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings", {
+    const res = await fetch(`${API_URL}/api/hirings`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -98,7 +101,7 @@ const handleCreate = async () => {
         deadline: "",
       });
 
-      const updated = await fetch("https://osmium-blog-admin-backend.onrender.com/api/hirings", { cache: "no-store" });
+      const updated = await fetch(`${API_URL}/api/hirings`, { cache: "no-store" });
       setJobs(await updated.json());
     } else {
       const errorData = await res.json();

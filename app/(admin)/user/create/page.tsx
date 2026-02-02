@@ -21,6 +21,9 @@ export default function CreateUserPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("🔷 API_URL:", API_URL);
+
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -32,7 +35,7 @@ export default function CreateUserPage() {
 
     try {
       const res = await fetch(
-        "https://osmium-blog-admin-backend.onrender.com/api/auth/register",
+        `${API_URL}/api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
